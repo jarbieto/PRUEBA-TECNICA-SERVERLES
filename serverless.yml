@@ -1,0 +1,92 @@
+service: serverless-star-wars-rest-api
+frameworkVersion: '2'
+
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: arn:aws:dynamodb:us-east-1:*:*
+
+resources:
+  Resources:
+    RootTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: 'root'
+    PeopleTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: 'people'
+
+functions:
+  createRoot:
+    handler: src/handler/createRoot.createRoot
+    events:
+      - http:
+          path: root/createRoot
+          method: post
+          cors: true
+  listRoots:
+    handler: src/handler/listRoots.listRoots
+    events:
+      - http:
+          path: root/listRoots
+          method: get
+          cors: true
+  getRoot:
+    handler: src/handler/getRoot.getRoot
+    events:
+      - http:
+          path: root/getRoot/{id}
+          method: get
+          cors: true
+  updateRoot:
+    handler: src/handler/updateRoot.updateRoot
+    events:
+      - http:
+          path: root/updateRoot/{id}
+          method: put
+          cors: true
+
+  getServicesPeople:
+    handler: src/handler/getServicesPeople.getServicesPeople
+    events:
+      - http:
+          path: root/getServicesPeople/{id}
+          method: get
+          cors: true
