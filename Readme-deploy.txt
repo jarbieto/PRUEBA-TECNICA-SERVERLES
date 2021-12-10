@@ -5,7 +5,7 @@
 
 2.- Instalar dependencia de npm 
     > npm i uuid aws-sdk            (llave unica para guardar los registros en dynamo DB)
-    > 
+    > npm i xhr2  (para la peticion de las apis externas)
 
 
 3.- Cuando se requiera realizar el deppliegue del serverless proyecto, 

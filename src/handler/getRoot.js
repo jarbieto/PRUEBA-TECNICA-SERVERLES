@@ -1,8 +1,3 @@
-/**
- * 
- * @author AJ Catambay | Bridging Code 2020
- * 
- */
  'use strict'
 
  const AWS = require('aws-sdk');
